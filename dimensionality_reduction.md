@@ -47,9 +47,9 @@ df_preproc <- preProcess(df, method=c("center", "scale"))
 df.s <- predict(df_preproc, df)
 ```
 # Results quality verification
-In order to assess quality of obtained components I looked at four aspects - eigenvalues, cumulative variance explained, complexity and uniqueness.
+In order to assess quality of obtained components I looked at four aspects - eigenvalues (SS loadings), cumulative variance explained, complexity and uniqueness.
 
-1. Eigenvalues and cumulative variance explained
+_Eigenvalues and cumulative variance explained_
 
 |            | RC1 | RC4 | RC2 | RC20 | RC13 | RC16 | RC8 | RC3 | RC25 | RC9 | RC18 | RC6 | RC23 | RC11 | RC19 | RC7 | RC14 | RC10 | RC5 | RC15 | RC17 | RC21 | RC30 | RC12 | RC24 | RC29 | RC26 | RC28 | RC27 | RC22 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -57,12 +57,56 @@ In order to assess quality of obtained components I looked at four aspects - eig
 | Proportion Var | 0.294 | 0.038 | 0.032 | 0.027 | 0.027 | 0.026 | 0.025 | 0.025 | 0.025 | 0.025 | 0.024 | 0.024 | 0.024 | 0.024 | 0.024 | 0.023 | 0.023 | 0.023 | 0.023. | 0.022 | 0.021 | 0.021 | 0.020 | 0.020 | 0.019 | 0.018 | 0.018 | 0.014 | 0.014 | 0.012 |
 | Cumulative Var | 0.294 | 0.332 | 0.364 | 0.391 | 0.418 | 0.444 | 0.469 | 0.495 | 0.520 | 0.544 | 0.569 | 0.593 | 0.617 | 0.641 | 0.665 | 0.688 | 0.711 | 0.733 | 0.756. | 0.777 | 0.799 | 0.819 | 0.840 | 0.860 | 0.879 | 0.897 | 0.915 | 0.929 | 0.943 | 0.955 |
 
-                
+In the table one can see that there are   21 rotated components with eigenvalues greater than 1 meaning that the linear combination of RCs components explains more variance than single attributes. However when we look at cumulative variance, those RCs explain 78% of variance which is too little to proceed. As we do want to keep components that explain as much variance as possible (at least 95%), all resulting RCs should be kept.              
 
+_Complexity and uniqueness_
+blabla
 
-
-
-3. Cumulative variance
-4. Complexity and uniqueness
-
-
+| | complex | unique |
+| Boczki.wedzone                  | 1.879905 | 0.103943130 |
+| Cielecina                       | 1.943003 | 0.035199734 |
+| Dagoma                          | 1.501562 | 0.006662387 |
+| Elementy.z.kaczki               | 2.471706 | 0.030501360 |
+| Flaki                           | 1.743190 | 0.018213819 |
+| Fungopol                        | 1.271656 | 0.007411272 |
+| Galarety                        | 2.784469 | 0.038515497 |
+| Indyk                          | 11.184126 | 0.084890436 |
+| Kabanosy                        | 2.214951 | 0.075323615 |
+| Kacik.Smaku                     | 1.549833 | 0.006200366 |
+| Kaczka                          | 1.736963 | 0.005834061 |
+| Kamis                           | 2.530438 | 0.025522958 |
+| Kanapkowe.drobiowe              | 1.513890 | 0.092984734 |
+| Kanapkowe.parzone               | 1.544458 | 0.080752139 |
+| Kanapkowe.suche                 | 1.732165 | 0.085350909 |
+| Kosci.wedzone                   | 2.931963 | 0.045473343 |
+| Kowalewski                      | 2.023866 | 0.027673572 |
+| Krokiety..nalesniki.paszteciki  | 1.475822 | 0.025626192 |
+| Krokus                          | 3.083474 | 0.064745493 |
+| Kurczak                         | 2.558227 | 0.055833977 |
+| Laskowe.parzone                 | 1.388707 | 0.080477541 |
+| Laskowe.suche                   | 1.496320 | 0.002842708 |
+| Marynaty                        | 1.112299 | 0.003609784 |
+| Maslo.smalec                    | 1.793405 | 0.021641914 |
+| Metki                           | 1.732505 | 0.078480324 |
+| Miesa.garmazeryjne              | 2.261448 | 0.015488995 |
+| Miesa.i.Garmazerka.z.pieca      | 1.291528 | 0.006524275 |
+| Olej..oliwy                     | 1.381727 | 0.013810775 |
+| Parowki                         | 1.430763 | 0.070155410 |
+| Pierogi..uszka                  | 3.037208 | 0.031626271 |
+| Podravka                        | 2.040404 | 0.047313026 |
+| Podrobowe                       | 1.362268 | 0.048049831 |
+| Pozostala.Garmazerka            | 1.638206 | 0.013136803 |
+| Pozostale.Dodatki               | 1.528274 | 0.017368880 |
+| Pozostale.Miesa                 | 1.381097 | 0.014109227 |
+| Produkty.maczne                 | 2.246241 | 0.027724080 |
+| Proeko                          | 1.360767 | 0.010666520 |
+| Rozne                           | 1.262522 | 0.059353383 |
+| Salami                          | 1.963190 | 0.078427021 |
+| Sery                            | 4.501061 | 0.071552006 |
+| Soki..napoje                    | 1.679097 | 0.063547946 |
+| Surowe                          | 2.214241 | 0.103279393 |
+| Surowki                         | 1.497082 | 0.017624678 |
+| Wedzonki                        | 1.574704 | 0.054460315 |
+| Wedzonki.drobiowe               | 1.439354 | 0.075711444 |
+| Wieprzowina                     | 2.422077 | 0.073649189 |
+| Wolowina                        | 5.880608 | 0.085016460 |
