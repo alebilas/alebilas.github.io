@@ -30,7 +30,7 @@ for(i in 2:ncol(df)) {
 
 dev.off()
 ```
-![Scatter plot 1: Cielecina vs. Indyk](https://github.com/alebilas/images/blob/main/scatter1.png)
+![Scatter plot 1: Cielecina vs. Indyk](https://github.com/alebilas/images/blob/main/scatter.png)
 
 You can use the [editor on GitHub](https://github.com/alebilas/alebilas.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
 
