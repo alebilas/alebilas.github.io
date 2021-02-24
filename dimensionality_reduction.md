@@ -46,7 +46,15 @@ First data needs to be scaled in order to equilibrate the magnitude of the varia
 df_preproc <- preProcess(df, method=c("center", "scale"))
 df.s <- predict(df_preproc, df)
 ```
-# Results quality verification
+
+## Principal Components Analysis
+I used _psych_ library PCA algorithm as it enables usage of rotation. Rotations are used to standardize loadings and make them more interpretable.
+
+```markdown
+pca = principal(df.s, nfactors=30, rotate="varimax")
+```
+
+## Results quality verification
 In order to assess quality of obtained components I looked at four aspects - eigenvalues (SS loadings), cumulative variance explained, complexity and uniqueness.
 
 _Eigenvalues and cumulative variance explained_
@@ -60,9 +68,15 @@ _Eigenvalues and cumulative variance explained_
 In the table one can see that there are   21 rotated components with eigenvalues greater than 1 meaning that the linear combination of RCs components explains more variance than single attributes. However when we look at cumulative variance, those RCs explain 78% of variance which is too little to proceed. As we do want to keep components that explain as much variance as possible (at least 95%), all resulting RCs should be kept.              
 
 _Complexity and uniqueness_
-blabla
+Uniqueness of a variable refers to variance that is unique to the variable and not shared with others. The lower its value is, the higher relevance of this variable.
+Complexity represents a number of latent components needed to account for an attribute. An ideal value of complexity is 1 meaning that each attribute would constitute only one component.
 
-| | complex | unique |
+```markdown
+comp_uniq = data.frame(Complexity=pca$complexity, Uniqueness=pca$uniqueness)
+comp_uniq
+```
+
+| | Complexity | Uniqueness |
 | --- | --- | --- |
 | Boczki.wedzone                  | 1.879905 | 0.103943130 |
 | Cielecina                       | 1.943003 | 0.035199734 |
@@ -111,3 +125,16 @@ blabla
 | Wedzonki.drobiowe               | 1.439354 | 0.075711444 |
 | Wieprzowina                     | 2.422077 | 0.073649189 |
 | Wolowina                        | 5.880608 | 0.085016460 |
+
+To list attributes that may be considered to be removed the following conditions were used and returned _Wolowina_ and _Indyk_ items.:
+```markdown
+worst = comp_uniq[comp_uniq$Complexity>5 | comp_uniq$Uniqueness>0.5,]
+worst
+```
+
+Mean item complexity is 2.2 which is means that on average one component is loaded by 2 items. Removing _Wolowina_ and _Indyk_ from the dataset resulted in lowering the mean item complexity to 1.9, however those attributes are very significant business-wise, hence I decided not to remove them.
+
+## Rotated loading interpretation
+Now when one knows that obtained components are of good quality, there is time for interpretation. To see only significant loadings I selected only those that are higher than 0.5. Some RCs does not show any significancy in terms of single items so the interpretation will be done only for those components that comprise of at least one significant loading.
+
+
