@@ -183,3 +183,16 @@ print(loadings(pca), digits=3, cutoff=0.5, sort=TRUE)
 | Miesa.i.Garmazerka.z.pieca      |       |       |       |       |       |       |       |       |       |       |       |       |       | 0.934 |       |       |       |       |       |       |       |       |       |       |       |       |       |       |       | 
 | Pozostala.Garmazerka            |       |       |       |       |       |       |       |       |       |       |       |       |       |       | 0.876 |       |       |       |       |       |       |       |       |       |       |       |       |       |       | 
 
+## Naming the components
+**RC1**: Items used on a daily basis. Products for breakfast, lunch.
+**RC4**: Juices, sweets.
+**RC2**: Beef meat.
+**RC20**: Other meat, usually used for soups.
+**RC13, RC3, RC9, RC23**: Meal sides, conserves.
+**RC16, RC11, RC19**: Ready-made food.
+**RC8**: Oils.
+**RC20, RC18**: Seasonings.
+**RC6**: Raw salads.
+**RC22**: Smoked bones.
+
+The obtained components may be used as inputs in further analyses, for instance in clustering algorithms.
