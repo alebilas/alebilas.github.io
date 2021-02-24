@@ -4,7 +4,7 @@
 ### Introduction
 Principal Component Analysis usually serves as a method of creating new artificial attributes for further analytical initiatives. While data analysts happen not to look at the new features explainability, the more business-focused people may want to get to know a little bit more about what constitutes the new attributes. Another situation when PCA is helpful is when there is no data dictionaries available or they are too granular. In such a case the algorithm is leveraged in order to find "profiles" of units being analysed. In the following analysis the former approach is applied on meat stores revenue data. Products cateries number over 50 categories and the goal is to find stores' profiles in terms of what type of products they sell most often. PCA method is widely used in both academic and business analyses due to being easy to understand and performant.
 
-## Premiliminary analysis
+## Preliminary analysis
 The initial dataset numbers 208 rows (stores) and 52 attributes - ID and 51 attributes for revenue referring to 51 product categories. The first step is to check whethet all columns may be used in terms of variance and null rate. 
 
 ```markdown
@@ -30,7 +30,7 @@ for(i in 2:ncol(df)) {
 
 dev.off()
 ```
-![Scatter plot 1: Cielecina vs. Indyk](https://abilas.github.com/images/scatter1.png)
+![Scatter plot 1: Cielecina vs. Indyk](https://alebilas.github.com/images/scatter1.png)
 
 You can use the [editor on GitHub](https://github.com/alebilas/alebilas.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
 
