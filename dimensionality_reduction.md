@@ -63,6 +63,7 @@ _Complexity and uniqueness_
 blabla
 
 | | complex | unique |
+| --- | --- | --- |
 | Boczki.wedzone                  | 1.879905 | 0.103943130 |
 | Cielecina                       | 1.943003 | 0.035199734 |
 | Dagoma                          | 1.501562 | 0.006662387 |
