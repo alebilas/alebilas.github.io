@@ -70,6 +70,7 @@ _Eigenvalues and cumulative variance explained_
 scree(pca$loading)
 ```
 ![Eigenvalues, scree plot](https://github.com/alebilas/images/blob/main/eigenvalues.png)
+
 In the table one can see that there are 21 rotated components with eigenvalues greater than 1 meaning that the linear combination of RCs components explains more variance than single attributes. However when we look at cumulative variance, those RCs explain 78% of variance which is too little to proceed. As we do want to keep components that explain as much variance as possible (at least 95%), all resulting RCs should be kept.              
 
 _Complexity and uniqueness_
