@@ -52,6 +52,7 @@ I used _psych_ library PCA algorithm as it enables usage of rotation. Rotations 
 
 ```markdown
 pca = principal(df.s, nfactors=30, rotate="varimax")
+pca
 ```
 
 ## Results quality verification
@@ -65,9 +66,14 @@ _Eigenvalues and cumulative variance explained_
 | Proportion Var | 0.294 | 0.038 | 0.032 | 0.027 | 0.027 | 0.026 | 0.025 | 0.025 | 0.025 | 0.025 | 0.024 | 0.024 | 0.024 | 0.024 | 0.024 | 0.023 | 0.023 | 0.023 | 0.023. | 0.022 | 0.021 | 0.021 | 0.020 | 0.020 | 0.019 | 0.018 | 0.018 | 0.014 | 0.014 | 0.012 |
 | Cumulative Var | 0.294 | 0.332 | 0.364 | 0.391 | 0.418 | 0.444 | 0.469 | 0.495 | 0.520 | 0.544 | 0.569 | 0.593 | 0.617 | 0.641 | 0.665 | 0.688 | 0.711 | 0.733 | 0.756. | 0.777 | 0.799 | 0.819 | 0.840 | 0.860 | 0.879 | 0.897 | 0.915 | 0.929 | 0.943 | 0.955 |
 
-In the table one can see that there are   21 rotated components with eigenvalues greater than 1 meaning that the linear combination of RCs components explains more variance than single attributes. However when we look at cumulative variance, those RCs explain 78% of variance which is too little to proceed. As we do want to keep components that explain as much variance as possible (at least 95%), all resulting RCs should be kept.              
+```markdown
+scree(pca$loading)
+```
+![Eigenvalues, scree plot](https://github.com/alebilas/images/blob/main/eigenvalues.png)
+In the table one can see that there are 21 rotated components with eigenvalues greater than 1 meaning that the linear combination of RCs components explains more variance than single attributes. However when we look at cumulative variance, those RCs explain 78% of variance which is too little to proceed. As we do want to keep components that explain as much variance as possible (at least 95%), all resulting RCs should be kept.              
 
 _Complexity and uniqueness_
+
 Uniqueness of a variable refers to variance that is unique to the variable and not shared with others. The lower its value is, the higher relevance of this variable.
 Complexity represents a number of latent components needed to account for an attribute. An ideal value of complexity is 1 meaning that each attribute would constitute only one component.
 
