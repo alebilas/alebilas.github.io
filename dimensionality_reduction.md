@@ -1,8 +1,8 @@
-## Principal Component Analysis as a way to get meat stores selling profiles
+## Principal Component Analysis as a way to get new attributes for meat stores sales profiles
 #### Aleksandra Biłas
 
 ### Introduction
-Principal Component Analysis usually serves as a method of creating new artificial attributes for further analytical initiatives. While data analysts happen not to look at the new features explainability, the more business-focused people may want to get to know a little bit more about what constitutes the new attributes. Another situation when PCA is helpful is when there is no data dictionaries available or they are too granular. In such a case the algorithm is leveraged in order to find "profiles" of units being analysed. In the following analysis the former approach is applied on meat stores revenue data. Products cateries number over 50 categories and the goal is to find stores' profiles in terms of what type of products they sell most often. PCA method is widely used in both academic and business analyses due to being easy to understand and performant.
+Principal Component Analysis usually serves as a method of creating new artificial attributes for further analytical initiatives. While data analysts happen not to look at the new features explainability, the more business-focused people may want to get to know a little bit more about what constitutes the new attributes. Another situation when PCA is helpful is when there is no data dictionaries available or they are too granular. In such a case the algorithm is leveraged in order to find "profiles" of units being analysed. In the following analysis the former approach is applied on meat stores revenue data. Products categories number over 50 categories and the goal is to find stores' profiles in terms of what type of products they sell most often. PCA method is widely used in both academic and business analyses due to being easy to understand and performant.
 
 ## Required packages
 ```markdown
