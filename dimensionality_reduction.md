@@ -12,7 +12,7 @@ library(maptools)
 ```
 
 ## Preliminary analysis
-The initial dataset numbers 208 rows (stores) and 52 attributes - ID and 51 attributes for revenue referring to 51 product categories. The first step is to check whethet all columns may be used in terms of variance and null rate. 
+The initial dataset numbers 208 rows (stores) and 52 attributes - ID and 51 attributes for revenue referring to 51 product categories. The first step is to check whether all columns may be used in terms of variance and null rate. 
 
 ```markdown
 summary(df)
