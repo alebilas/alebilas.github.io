@@ -122,10 +122,10 @@ Plots for algorithms based on original data
           Original data          
 | cluster | size | ave.sil.width |
 | ------- | ---- | ------------- |
-|       1 |  141 |       0.43   |
-|       2 |  67  |       0.00   |
+|       1 |  148 |       0.53   |
+|       2 |  60  |       0.21   |
 
-K-means++ powered by original data presents much better results in terms of silhouette score. However it is not perfect yet because 0 value of the score means that there would be some clusters better to be assigned to.
+K-means++ powered by original data presents much better results in terms of silhouette score.
 
 #### Partitioning Around Medoids
 PAM algorithm is alike K-means with a difference of looking for initial clusters among real data points, not like in K-means - selecting them randomly.
@@ -169,7 +169,7 @@ Average silhouette width per cluster:
 
 Silhouette score (Original data)
 Average silhouette width per cluster:
-0.4182401 0.1988049 0.3518220
+0.5656762 0.1312273
 
 Cluster and silhouette plots (PCA data)
 ![Clusters visualization for PAM on PCA data](https://github.com/alebilas/images/blob/main/fviz_cluster_pam_pca.png)
@@ -205,7 +205,7 @@ PCA data
 
 Original data
 |  average  |   single  |  complete |   ward    | 
-| 0.7165431 | 0.7118104 | 0.8027886 | **0.9125546** |
+| 0.8807898 | 0.8791851 | 0.9114954 | **0.9652859** |
 
 AC suggests using Ward method, ergo:
 ```markdown
@@ -246,9 +246,9 @@ PCA data
 Original data
 | cluster | size | ave.sil.width |
 | ------- | ---- | ------------- |
-|       1 | 103  |       -0.03   |
-|       2 |  84  |        0.41   |
-|       3 |  21  |        0.04   |
+|       1 | 111  |        0.14   |
+|       2 |  71  |        0.50   |
+|       3 |  26  |        0.20   |
 
 Dendrogram and silhouette plot (PCA data)
 ![Dendrogram for HC on PCA data](https://github.com/alebilas/images/blob/main/hc_pca_dendr.png)
