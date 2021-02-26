@@ -98,7 +98,7 @@ Plots for algorithms based on original data
 ![Silhouette scores visualization for K-means++ on original data](https://github.com/alebilas/images/blob/main/kmpp_org_sil_viz.png)
 
 
-|              PCA data          |
+             PCA data          
 | ------------------------------ |
 | cluster | size | ave.sil.width |
 | ------- | ---- | ------------- |
@@ -106,7 +106,7 @@ Plots for algorithms based on original data
 |       2 |  64  |       -0.10   |
 |       3 |  23  |       -0.14   |
 
-|         Original data          |
+          Original data          
 | ------------------------------ |
 | cluster | size | ave.sil.width |
 | ------- | ---- | ------------- |
