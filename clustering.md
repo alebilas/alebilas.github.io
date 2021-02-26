@@ -64,7 +64,7 @@ Clustering methods usually require to set a parameter for number of clusters to 
 # Optimal number of clusters - silhouette score (PCA data)
 opt_km_pca <- Optimal_Clusters_KMeans(df_pca_l, max_clusters=10, plot_clusters=TRUE, criterion="silhouette")
 ```
-![Optimal number of clusters for K-means on PCA data](https://github.com/alebilas/images/blob/main/pca_kmeans_optimal_clust_number_sil.png)
+![Optimal number of clusters for K-means on PCA data](https://github.com/alebilas/images/blob/main/pca_kmeans_optimal_clust_number_sil.png) ![Optimal number of clusters for K-means on original data](https://github.com/alebilas/images/blob/main/org_kmeans_optimal_clust_number_sil.png)
 
 ```markdown
 # Optimal number of clusters - silhouette score (original data)
