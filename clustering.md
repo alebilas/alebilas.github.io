@@ -171,17 +171,17 @@ Silhouette score (Original data)
 Average silhouette width per cluster:
 0.4182401 0.1988049 0.3518220
 
-Cluster nd silhouette plots (PCA data)
+Cluster and silhouette plots (PCA data)
 ![Clusters visualization for PAM on PCA data](https://github.com/alebilas/images/blob/main/fviz_cluster_pam_pca.png)
 
 ![Silhouette scores visualization for PAM on PCA data](https://github.com/alebilas/images/blob/main/sil_plot_pam_pca.png)
 
-Cluster nd silhouette plots (Original data)
+Cluster and silhouette plots (Original data)
 ![Clusters visualization for PAM on originl data](https://github.com/alebilas/images/blob/main/fviz_cluster_pam_org.png)
 
 ![Silhouette scores visualization for PAM on original data](https://github.com/alebilas/images/blob/main/sil_plot_pam_org.png)
 
-If someone wanted to choose between PAM and K-Means++ the results lean towards PAM due to all positive silhouette scores. They are still not high enough but surely better than in the previous method where 2 out of 3 clusters showed negative scores.
+Again, original data gives much better results than PCA input.
 
 #### Hierarchical algorithms
 The 3rd part of the analysis was a test for hierarchical methods quality. First, one can check which of various hierarchical methods produces the higest agglomerative coefficient.
@@ -190,12 +190,22 @@ The 3rd part of the analysis was a test for hierarchical methods quality. First,
 ac_pca <- function(x) {
   agnes(df_pca_l, method = x)$ac
 }
-
 map_dbl(m, ac_pca)
+
+ac <- function(x) {
+  agnes(df, method = x)$ac
+}
+map_dbl(m, ac)
 ```
+
+PCA data
 |  average  |   single  |  complete |   ward    |
 | --------- | --------- | --------- | --------- |
 | 0.7015815 | 0.6623972 | 0.7900627 | **0.8008557** | 
+
+Original data
+|  average  |   single  |  complete |   ward    | 
+| 0.7165431 | 0.7118104 | 0.8027886 | **0.9125546** |
 
 AC suggests using Ward method, ergo:
 ```markdown
@@ -206,28 +216,51 @@ rect.hclust(hc_pca, k = 3, border = 2:5)
 
 _Ward method application_
 ```markdown
-# Run hierarchical clustering - Ward
+# Run hierarchical clustering - Ward (PCA data)
 hc_pc <- hcut(df_pca_l, k = 3, hc_method = "ward.D2")
 
+# Run hierarchical clustering - Ward (Original data)
+hc <- hcut(df, k = 3, hc_method = "ward.D2")
+
 _Dendrogram and silhouette plots_
-# Dendrogram
+# Dendrogram (PCA data)
 fviz_dend(hc_pca, rect = TRUE)
 
-# Silhouette plot
+# Dendrogram (Originaal data)
+fviz_dend(hc, rect = TRUE)
+
+# Silhouette plot (PCA data)
 fviz_silhouette(hc_pca)
+
+# Silhouette plot (Original data)
+fviz_silhouette(hc)
 ```
 
+PCA data
 | cluster | size | ave.sil.width |
 | ------- | ---- | ------------- |
 |       1 |  39  |       -0.14   |
 |       2 | 161  |        0.30   |
 |       3 |   8  |       -0.14   |
 
+Original data
+| cluster | size | ave.sil.width |
+| ------- | ---- | ------------- |
+|       1 | 103  |       -0.03   |
+|       2 |  84  |        0.41   |
+|       3 |  21  |        0.04   |
+
+Dendrogram and silhouette plot (PCA data)
 ![Dendrogram for HC on PCA data](https://github.com/alebilas/images/blob/main/hc_pca_dendr.png)
 
 ![Silhouette scores visualization for HC on PCA data](https://github.com/alebilas/images/blob/main/hc_pca_sil.png)
 
-Ward method gives similar examples as K-means++ when it comes to silhouette scores. Among 3 methods presented only PAM resulted in positive scores which is most promising.
+Dendrogram and silhouette plot (Original data)
+![Dendrogram for HC on original data](https://github.com/alebilas/images/blob/main/hc_org_dendr.png)
+
+![Silhouette scores visualization for HC on original data](https://github.com/alebilas/images/blob/main/hc_org_sil.png)
+
+For the 3rd time leveraging original data gives better results, so the choise is simple as to selection of input data. From the algorithm point of view, PAM managed best what can be seen the highest positive silhouette scores.
 
 
 
