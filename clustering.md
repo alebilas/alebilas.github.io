@@ -56,17 +56,27 @@ _Searching for an optimal number of clusters_
 Clustering methods usually require to set a parameter for number of clusters to produce. To reduce number of attempts one can use a function that depicts silhouette measures for variuos numbers of clusters.
 
 ```markdown
-# Optimal number of clusters - silhouette score
+# Optimal number of clusters - silhouette score (PCA data)
 opt_km_pca <- Optimal_Clusters_KMeans(df_pca_l, max_clusters=10, plot_clusters=TRUE, criterion="silhouette")
 ```
-![Optimal number of clusters for K-means](https://github.com/alebilas/images/blob/main/pca_kmeans_optimal_clust_number_sil.png)
+![Optimal number of clusters for K-means on PCA data](https://github.com/alebilas/images/blob/main/pca_kmeans_optimal_clust_number_sil.png)
 
-In the picture above one can see that 2 clusters give the highest silhouette score which is quite expected because usually the highest number of clusters the lowest silhouette score or other quality measures. Becasue of that I decided to choose the number of clusters based on the lowest delta resulted from adding additional cluster which in this case is 3.
+```markdown
+# Optimal number of clusters - silhouette score (original data)
+opt_km<-Optimal_Clusters_KMeans(df.s, max_clusters=10, plot_clusters=TRUE, criterion="silhouette")
+```
+![Optimal number of clusters for K-means on original data](https://github.com/alebilas/images/blob/main/org_kmeans_optimal_clust_number_sil.png)
+
+In the pictures above one can see that 2 clusters give the highest silhouette score which is quite expected because usually the highest number of clusters the lowest silhouette score or other quality measures. Becasue of that I decided to choose the number of clusters based on the lowest delta resulted from adding additional cluster which in both cases is 3.
 
 _K-means++ algorithm_
 ```markdown
-# Run K-means++ from LICORS library
+### Run K-means++ from LICORS library ###
+# PCA data
 kmpp_pca <- kmeanspp(df_pca_l, k = 3, start = "random")
+
+# Original data
+kmpp <- kmeanspp(df.s, k = 3, start = "random")
 
 _Clusters and silhouette plots_
 # Cluster plot: dim1, dim2
@@ -77,15 +87,24 @@ fviz_cluster(list(data=df_pca_l, cluster=kmpp_pca$cluster),
 sil_pca_kmpp <- silhouette(kmpp_pca$cluster, dist(df_pca_l))
 fviz_silhouette(sil_pca_kmpp)
 ```
+Plots for algorithms based on PCA data
 ![Clusters visualization for K-means++ on PCA data](https://github.com/alebilas/images/blob/main/fviz_cluster_kmpp_pca.png)
 
 ![Silhouette scores visualization for K-means++ on PCA data](https://github.com/alebilas/images/blob/main/kmpp_pca_sil_vis.png)
 
-| cluster | size | ave.sil.width |
-| ------- | ---- | ------------- |
-|       1 | 121  |        0.26   |
-|       2 |  64  |       -0.10   |
-|       3 |  23  |       -0.14   |
+Plots for algorithms based on original data
+![Clusters visualization for K-means++ on original data](https://github.com/alebilas/images/blob/main/fviz_cluster_kmpp_org.png)
+
+![Silhouette scores visualization for K-means++ on original data](https://github.com/alebilas/images/blob/main/kmpp_org_sil_vis.png)
+
+
+|              PCA data          |         Original data          |
+| ------------------------------ | ------------------------------ |
+| cluster | size | ave.sil.width | cluster | size | ave.sil.width |
+| ------- | ---- | ------------- | ------- | ---- | ------------- |
+|       1 | 121  |        0.26   |       1 |  60  |       -0.03   |
+|       2 |  64  |       -0.10   |       2 |  21  |       -0.08   |
+|       3 |  23  |       -0.14   |       3 |  127 |        0.05   |
 
 All pictures depict that the split using K-means++ method is not optimal due to very low silhouette scores for 2 out of 3 subgroups as well as overlapping clusters.
 
