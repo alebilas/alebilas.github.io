@@ -62,7 +62,7 @@ opt_km<-Optimal_Clusters_KMeans(df.s, max_clusters=10, plot_clusters=TRUE, crite
 ```
 ![Optimal number of clusters for K-means on original data](https://github.com/alebilas/images/blob/main/org_kmeans_optimal_clust_number_sil.png)
 
-In the pictures above one can see that 2 clusters give the highest silhouette score which is quite expected because usually the highest number of clusters the lowest silhouette score or other quality measures. Becasue of that I decided to choose the number of clusters based on the lowest delta resulted from adding additional cluster which in both cases is 3.
+In the pictures above one can see that 2 clusters give the highest silhouette score which is quite expected because usually the highest number of clusters the lowest silhouette score or other quality measures. Becasue of that I decided to choose the number of clusters based on the lowest delta resulted from adding additional cluster which 3 for PCA data. For original data I keep 2 cluster as suggested by the plot because the drop between 2th and 3rd cluster if too laarge.
 
 _K-means++ algorithm_
 ```markdown
@@ -71,16 +71,25 @@ _K-means++ algorithm_
 kmpp_pca <- kmeanspp(df_pca_l, k = 3, start = "random")
 
 # Original data
-kmpp <- kmeanspp(df.s, k = 3, start = "random")
+kmpp <- kmeanspp(df, k = 2, start = "random")
 
 _Clusters and silhouette plots_
-# Cluster plot: dim1, dim2
+# Cluster plot: dim1, dim2 (PCA data)
 fviz_cluster(list(data=df_pca_l, cluster=kmpp_pca$cluster), 
              ellipse.type="norm", geom="point", stand=FALSE, palette="jco", ggtheme=theme_classic())
 
-# Silhouette plot
+# Silhouette plot (PCA data)
 sil_pca_kmpp <- silhouette(kmpp_pca$cluster, dist(df_pca_l))
 fviz_silhouette(sil_pca_kmpp)
+
+# Cluster plot: dim1, dim2 (Origional data)
+fviz_cluster(list(data=df, cluster=kmpp$cluster), 
+             ellipse.type="norm", geom="point", stand=FALSE, palette="jco", ggtheme=theme_classic())
+
+# Silhouette plot (Original data)
+ sil<-silhouette(kmpp$cluster, dist(df))
+fviz_silhouette(sil)
+
 ```
 Plots for algorithms based on PCA data
 ![Clusters visualization for K-means++ on PCA data](https://github.com/alebilas/images/blob/main/fviz_cluster_kmpp_pca.png)
@@ -103,11 +112,10 @@ Plots for algorithms based on original data
           Original data          
 | cluster | size | ave.sil.width |
 | ------- | ---- | ------------- |
-|       1 |  60  |       -0.03   |
-|       2 |  21  |       -0.08   |
-|       3 |  127 |        0.05   |
+|       1 |  141 |       0.43   |
+|       2 |  67  |       0.00   |
 
-To summarize results of K-means++ for PCA and original data it is not straightforward that one aapproach is much better than the other. On one hand the averaage silhouette score for PCA-based algorithm is higher than for original data. However when it comes to scores per cluster, both approaches have negative values for 2 out of 3 group but original data produces greater values than PCA one.
+K-means++ powered by original data presents much better results in terms of silhouette score. However it is not perfect yet because 0 value of the score means that there would be some clusters better to be assigned to.
 
 #### Partitioning Around Medoids
 PAM algorithm is alike K-means with a difference of looking for initial clusters among real data points, not - like in K-means - selecting them randomly.
