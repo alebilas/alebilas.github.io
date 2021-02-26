@@ -255,6 +255,7 @@ Dendrogram and silhouette plot (PCA data)
 
 ![Silhouette scores visualization for HC on PCA data](https://github.com/alebilas/images/blob/main/hc_pca_sil.png)
 
+
 Dendrogram and silhouette plot (Original data)
 ![Dendrogram for HC on original data](https://github.com/alebilas/images/blob/main/hc_org_dendr.png)
 
