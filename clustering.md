@@ -125,8 +125,53 @@ Average silhouette width per cluster:
 
 ![Silhouette scores visualization for PAM on PCA data](https://github.com/alebilas/images/blob/main/sil_plot_pam_pca.png)
 
-If someone wanted to choose between PAM and K-Means++ the results lean towards PAM due to all positive silhouette scores. They are still not high enough but surely better thaan in the previous method where 2 out of 3 clusters showed negative scores.
+If someone wanted to choose between PAM and K-Means++ the results lean towards PAM due to all positive silhouette scores. They are still not high enough but surely better than in the previous method where 2 out of 3 clusters showed negative scores.
 
+#### Hierarchical algorithms
+The 3rd part of the analysis was a test for hierarchical methods quality. First, one can check which of various hierarchical methods produces the higest agglomerative coefficient.
+
+```markdown
+ac_pca <- function(x) {
+  agnes(df_pca_l, method = x)$ac
+}
+
+map_dbl(m, ac_pca)
+```
+|  average  |   single  |  complete |   ward    |
+| --------- | --------- | --------- | --------- |
+| 0.7015815 | 0.6623972 | 0.7900627 | **0.8008557** | 
+
+AC suggests using Ward method, ergo:
+```markdown
+hc_pca <- agnes(df_pca_l, method = "ward")
+pltree(hc_pca, cex = 0.6, hang = -1, main = "dendrogram - agnes")
+rect.hclust(hc_pca, k = 3, border = 2:5)
+```
+
+_Ward method application_
+```markdown
+# Run hierarchical clustering - Ward
+hc_pc <- hcut(df_pca_l, k = 3, hc_method = "ward.D2")
+
+_Dendrogram and silhouette plots_
+# Dendrogram
+fviz_dend(hc_pca, rect = TRUE)
+
+# Silhouette plot
+fviz_silhouette(hc_pca)
+```
+
+| cluster | size | ave.sil.width |
+| ------- | ---- | ------------- |
+|       1 |  39  |       -0.14   |
+|       2 | 161  |        0.30   |
+|       3 |   8  |       -0.14   |
+
+![Dendrogram for HC on PCA data](https://github.com/alebilas/images/blob/main/hc_pca_dendr.png)
+
+![Silhouette scores visualization for HC on PCA data](https://github.com/alebilas/images/blob/main/hc_pca_sil.png)
+
+Ward method gives similar examples as K-means++ when it comes to silhouette scores. Among 3 methods presented only PAM resulted in positive scores which is most promising.
 
 
 
