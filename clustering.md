@@ -16,3 +16,119 @@ library(LICORS)
 library(tidyverse)
 library(dendextend)
 ```
+
+### Preliminary analysis
+**PCA outcomes**
+
+The first type of input tested were results obtained in PCA analysis and limited to only those Principal Components that showed significancy in at least one rotated loading during an interpretation phase. Thus, we have got the following attributes to be taken into account:
+**PC1**: Items used on a daily basis. Products for breakfast, lunch.
+**PC4**: Juices, sweets.
+**PC2**: Beef meat.
+**PC20**: Other meat, usually used for soups.
+**PC13, PC3, PC9, PC23**: Meal sides, conserves.
+**PC16, PC11, PC19**: Ready-made food.
+**PC8**: Oils.
+**PC20, PC18**: Seasonings.
+**PC6**: Raw salads.
+**PC22**: Smoked bones.
+
+**Original data**
+The initial dataset numbers 208 rows (stores) and 52 attributes - ID and 51 attributes for revenue referring to 51 product categories. The first step is to check whether all columns may be used in terms of variance and null rate. 
+
+```markdown
+summary(df)
+```
+4 columns have been removed due high null rate (greater than 75%): Alkohole&wina (alkohol&wine), Mrozonki&lody (frozen foods, ice creams), Pieczywo (breadstuff), Pozostale Przyprawy (other seasonings). 
+
+Then the data needs to be scaled in order to equilibrate the magnitude of the variables, simultaneously ensuring outliers to have reduced their influence (for instance Min Max Scaler does not provide this).
+
+```markdown
+df_preproc <- preProcess(df, method=c("center", "scale"))
+df.s <- predict(df_preproc, df)
+```
+
+### Analysis
+#### K-means++
+K-means++ is proven by many authors to be more effective than standard K-means due to more stable centroids. The difference between K-means and K-means++ is that in the former initial centers are chosen randomly (as in the latter) but then subsequent centers are chosen from among remaining data points with probability corresponding to distance between a data point and the previous center. In other words, K-means++ centroids are less random than in case of the standard K-Means algorithm.
+
+_Searching for an optimal number of clusters_
+
+Clustering methods usually require to set a parameter for number of clusters to produce. To reduce number of attempts one can use a function that depicts silhouette measures for variuos numbers of clusters.
+
+```markdown
+# Optimal number of clusters - silhouette score
+opt_km_pca <- Optimal_Clusters_KMeans(df_pca_l, max_clusters=10, plot_clusters=TRUE, criterion="silhouette")
+```
+![Optimal number of clusters for K-means](https://github.com/alebilas/images/blob/main/pca_kmeans_optimal_clust_number_sil.png)
+
+In the picture above one can see that 2 clusters give the highest silhouette score which is quite expected because usually the highest number of clusters the lowest silhouette score or other quality measures. Becasue of that I decided to choose the number of clusters based on the lowest delta resulted from adding additional cluster which in this case is 3.
+
+_K-means++ algorithm_
+```markdown
+# Run K-means++ from LICORS library
+kmpp_pca <- kmeanspp(df_pca_l, k = 3, start = "random")
+
+_Clusters and silhouette plots_
+# Cluster plot: dim1, dim2
+fviz_cluster(list(data=df_pca_l, cluster=kmpp_pca$cluster), 
+             ellipse.type="norm", geom="point", stand=FALSE, palette="jco", ggtheme=theme_classic())
+
+# Silhouette plot
+sil_pca_kmpp <- silhouette(kmpp_pca$cluster, dist(df_pca_l))
+fviz_silhouette(sil_pca_kmpp)
+```
+![Clusters visualization for K-means++ on PCA data](https://github.com/alebilas/images/blob/main/fviz_cluster_kmpp_pca.png)
+
+![Silhouette scores visualization for K-means++ on PCA data](https://github.com/alebilas/images/blob/main/kmpp_pca_sil_vis.png)
+
+| cluster | size | ave.sil.width |
+| ------- | ---- | ------------- |
+|       1 | 121  |        0.26   |
+|       2 |  64  |       -0.10   |
+|       3 |  23  |       -0.14   |
+
+All pictures depict that the split using K-means++ method is not optimal due to very low silhouette scores for 2 out of 3 subgroups as well as overlapping clusters.
+
+#### Partitioning Around Medoids
+PAM algorithm is alike K-means with a difference of looking for initial clusters among real data points, not - like in K-means - selecting them randomly.
+
+_Searching for an optimal number of clusters_
+
+```markdown
+# Optimal number of clusters - silhouette score
+opt_md_pca <- Optimal_Clusters_Medoids(df_pca_l, max_clusters=10, 'euclidean', plot_clusters=TRUE, criterion="silhouette")
+```
+![Optimal number of clusters for PAM](https://github.com/alebilas/images/blob/main/opt_clust_num_pam_pca.png)
+
+In PAM case I follow the sme logic as in K-means++ and choose k = 3.
+
+_PAM algorithm_
+```markdown
+# Run PAM
+pam_pca <- pam(df_pca_l, 3)
+
+summary(pam_pca)
+
+_Clusters and silhouette plots_
+# Cluster plot: dim1, dim2
+fviz_cluster(pam_pca, geom = "point", ellipse.type = "convex")
+
+# Silhouette plot
+sil_pca_pam <- silhouette(pam_pca$cluster, dist(df_pca_l))
+fviz_silhouette(sil_pca_pam)
+```
+
+Average silhouette width per cluster:
+0.03363569 0.02823446 0.04791684
+
+![Clusters visualization for PAM on PCA data](https://github.com/alebilas/images/blob/main/fviz_cluster_pam_pca.png)
+
+![Silhouette scores visualization for PAM on PCA data](https://github.com/alebilas/images/blob/main/sil_plot_pam_pca.png)
+
+If someone wanted to choose between PAM and K-Means++ the results lean towards PAM due to all positive silhouette scores. They are still not high enough but surely better thaan in the previous method where 2 out of 3 clusters showed negative scores.
+
+
+
+
+
+
