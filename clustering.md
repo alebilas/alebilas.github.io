@@ -99,7 +99,6 @@ Plots for algorithms based on original data
 
 
              PCA data          
-| ------------------------------ |
 | cluster | size | ave.sil.width |
 | ------- | ---- | ------------- |
 |       1 | 121  |        0.26   |
@@ -107,7 +106,6 @@ Plots for algorithms based on original data
 |       3 |  23  |       -0.14   |
 
           Original data          
-| ------------------------------ |
 | cluster | size | ave.sil.width |
 | ------- | ---- | ------------- |
 |       1 |  60  |       -0.03   |
