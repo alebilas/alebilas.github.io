@@ -40,12 +40,7 @@ summary(df)
 ```
 4 columns have been removed due high null rate (greater than 75%): Alkohole&wina (alkohol&wine), Mrozonki&lody (frozen foods, ice creams), Pieczywo (breadstuff), Pozostale Przyprawy (other seasonings). 
 
-Then the data needs to be scaled in order to equilibrate the magnitude of the variables, simultaneously ensuring outliers to have reduced their influence (for instance Min Max Scaler does not provide this).
-
-```markdown
-df_preproc <- preProcess(df, method=c("center", "scale"))
-df.s <- predict(df_preproc, df)
-```
+As the dataset contains pieces of information about revenues only, the units for all columns are the same, so there is no need to scale data. Due to small sample size, outliers are not removed.
 
 ### Analysis
 #### K-means++
@@ -120,12 +115,15 @@ PAM algorithm is alike K-means with a difference of looking for initial clusters
 _Searching for an optimal number of clusters_
 
 ```markdown
-# Optimal number of clusters - silhouette score
+# Optimal number of clusters - silhouette score (PCA data)
 opt_md_pca <- Optimal_Clusters_Medoids(df_pca_l, max_clusters=10, 'euclidean', plot_clusters=TRUE, criterion="silhouette")
+
+# Optimal number of clusters - silhouette score (Original data)
+opt_md<-Optimal_Clusters_Medoids(df.s, max_clusters=10, 'euclidean', plot_clusters=TRUE, criterion="silhouette")
 ```
 ![Optimal number of clusters for PAM](https://github.com/alebilas/images/blob/main/opt_clust_num_pam_pca.png)
 
-In PAM case I follow the sme logic as in K-means++ and choose k = 3.
+In PAM using PCA data I will follow the sme logic as in K-means++ and choose k = 3. However in PAM based on original data the drop from 2 to 3 clusters is too high to repeat the approach, thus 2 clusters will be generated.
 
 _PAM algorithm_
 ```markdown
