@@ -22,15 +22,25 @@ library(dendextend)
 
 The first type of input tested were results obtained in PCA analysis and limited to only those Principal Components that showed significancy in at least one rotated loading during an interpretation phase. Thus, we have got the following attributes to be taken into account:
 **PC1**: Items used on a daily basis. Products for breakfast, lunch.
+
 **PC4**: Juices, sweets.
+
 **PC2**: Beef meat.
+
 **PC20**: Other meat, usually used for soups.
+
 **PC13, PC3, PC9, PC23**: Meal sides, conserves.
+
 **PC16, PC11, PC19**: Ready-made food.
+
 **PC8**: Oils.
+
 **PC20, PC18**: Seasonings.
+
 **PC6**: Raw salads.
+
 **PC22**: Smoked bones.
+
 
 **Original data**
 The initial dataset numbers 208 rows (stores) and 52 attributes - ID and 51 attributes for revenue referring to 51 product categories. The first step is to check whether all columns may be used in terms of variance and null rate. 
@@ -118,27 +128,32 @@ Plots for algorithms based on original data
 K-means++ powered by original data presents much better results in terms of silhouette score. However it is not perfect yet because 0 value of the score means that there would be some clusters better to be assigned to.
 
 #### Partitioning Around Medoids
-PAM algorithm is alike K-means with a difference of looking for initial clusters among real data points, not - like in K-means - selecting them randomly.
+PAM algorithm is alike K-means with a difference of looking for initial clusters among real data points, not like in K-means - selecting them randomly.
 
 _Searching for an optimal number of clusters_
-
 ```markdown
 # Optimal number of clusters - silhouette score (PCA data)
 opt_md_pca <- Optimal_Clusters_Medoids(df_pca_l, max_clusters=10, 'euclidean', plot_clusters=TRUE, criterion="silhouette")
-
-# Optimal number of clusters - silhouette score (Original data)
-opt_md<-Optimal_Clusters_Medoids(df.s, max_clusters=10, 'euclidean', plot_clusters=TRUE, criterion="silhouette")
 ```
-![Optimal number of clusters for PAM](https://github.com/alebilas/images/blob/main/opt_clust_num_pam_pca.png)
+![Optimal number of clusters for PAM, PCA](https://github.com/alebilas/images/blob/main/opt_clust_num_pam_pca.png)
+
+```markdown
+# Optimal number of clusters - silhouette score (Original data)
+opt_md<-Optimal_Clusters_Medoids(df, max_clusters=10, 'euclidean', plot_clusters=TRUE, criterion="silhouette")
+```
+![Optimal number of clusters for PAM, original data](https://github.com/alebilas/images/blob/main/opt_clust_num_pam_org.png)
 
 In PAM using PCA data I will follow the sme logic as in K-means++ and choose k = 3. However in PAM based on original data the drop from 2 to 3 clusters is too high to repeat the approach, thus 2 clusters will be generated.
 
 _PAM algorithm_
 ```markdown
-# Run PAM
+# Run PAM (PCA data)
 pam_pca <- pam(df_pca_l, 3)
-
 summary(pam_pca)
+
+# Run PAM (Original data)
+pam <- pam(df, 2)
+summary(pam)
 
 _Clusters and silhouette plots_
 # Cluster plot: dim1, dim2
@@ -148,13 +163,23 @@ fviz_cluster(pam_pca, geom = "point", ellipse.type = "convex")
 sil_pca_pam <- silhouette(pam_pca$cluster, dist(df_pca_l))
 fviz_silhouette(sil_pca_pam)
 ```
-
+Silhouette score (PCA data)
 Average silhouette width per cluster:
 0.03363569 0.02823446 0.04791684
 
+Silhouette score (Original data)
+Average silhouette width per cluster:
+0.4182401 0.1988049 0.3518220
+
+Cluster nd silhouette plots (PCA data)
 ![Clusters visualization for PAM on PCA data](https://github.com/alebilas/images/blob/main/fviz_cluster_pam_pca.png)
 
 ![Silhouette scores visualization for PAM on PCA data](https://github.com/alebilas/images/blob/main/sil_plot_pam_pca.png)
+
+Cluster nd silhouette plots (Original data)
+![Clusters visualization for PAM on originl data](https://github.com/alebilas/images/blob/main/fviz_cluster_pam_org.png)
+
+![Silhouette scores visualization for PAM on original data](https://github.com/alebilas/images/blob/main/sil_plot_pam_org.png)
 
 If someone wanted to choose between PAM and K-Means++ the results lean towards PAM due to all positive silhouette scores. They are still not high enough but surely better than in the previous method where 2 out of 3 clusters showed negative scores.
 
