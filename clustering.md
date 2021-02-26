@@ -112,7 +112,7 @@ Plots for algorithms based on original data
 |       2 |  21  |       -0.08   |
 |       3 |  127 |        0.05   |
 
-All pictures depict that the split using K-means++ method is not optimal due to very low silhouette scores for 2 out of 3 subgroups as well as overlapping clusters.
+To summarize results of K-means++ for PCA and original data it is not straightforward that one aapproach is much better than the other. On one hand the averaage silhouette score for PCA-based algorithm is higher than for original data. However when it comes to scores per cluster, both approaches have negative values for 2 out of 3 group but original data produces greater values than PCA one.
 
 #### Partitioning Around Medoids
 PAM algorithm is alike K-means with a difference of looking for initial clusters among real data points, not - like in K-means - selecting them randomly.
