@@ -95,16 +95,16 @@ Plots for algorithms based on PCA data
 Plots for algorithms based on original data
 ![Clusters visualization for K-means++ on original data](https://github.com/alebilas/images/blob/main/fviz_cluster_kmpp_org.png)
 
-![Silhouette scores visualization for K-means++ on original data](https://github.com/alebilas/images/blob/main/kmpp_org_sil_vis.png)
+![Silhouette scores visualization for K-means++ on original data](https://github.com/alebilas/images/blob/main/kmpp_org_sil_viz.png)
 
 
-|              PCA data          |         Original data          |
-| ------------------------------ | ------------------------------ |
-| cluster | size | ave.sil.width | cluster | size | ave.sil.width |
-| ------- | ---- | ------------- | ------- | ---- | ------------- |
-|       1 | 121  |        0.26   |       1 |  60  |       -0.03   |
-|       2 |  64  |       -0.10   |       2 |  21  |       -0.08   |
-|       3 |  23  |       -0.14   |       3 |  127 |        0.05   |
+|              PCA data          ||         Original data          |
+| ------------------------------ || ------------------------------ |
+| cluster | size | ave.sil.width || cluster | size | ave.sil.width |
+| ------- | ---- | ------------- || ------- | ---- | ------------- |
+|       1 | 121  |        0.26   ||       1 |  60  |       -0.03   |
+|       2 |  64  |       -0.10   ||       2 |  21  |       -0.08   |
+|       3 |  23  |       -0.14   ||       3 |  127 |        0.05   |
 
 All pictures depict that the split using K-means++ method is not optimal due to very low silhouette scores for 2 out of 3 subgroups as well as overlapping clusters.
 
