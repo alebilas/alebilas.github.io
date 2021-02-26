@@ -263,7 +263,10 @@ Dendrogram and silhouette plot (Original data)
 
 For the 3rd time leveraging original data gives better results, so the choise is simple as to selection of input data. From the algorithm point of view, PAM managed best what can be seen the highest positive silhouette scores.
 
-
+```markdown
+df_pam <- cbind(df_with_id, pam$clustering)
+names(df_pam)[names(df_pam) == 'pam$clustering'] = 'cluster'
+```
 
 
 
