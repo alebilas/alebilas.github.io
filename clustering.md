@@ -104,6 +104,7 @@ fviz_silhouette(sil_pca_kmpp)
 
 ```markdown
 ################################ Original data ###############################
+
 # Train K-means++
 kmpp <- kmeanspp(df, k = 2, start = "random")
 
@@ -147,130 +148,166 @@ opt_md<-Optimal_Clusters_Medoids(df, max_clusters=10, 'euclidean', plot_clusters
 ```
 ![Optimal number of clusters for PAM, original data](https://github.com/alebilas/images/blob/main/opt_clust_num_pam_org.png)
 
-In PAM using PCA data I will follow the sme logic as in K-means++ and choose k = 3. However in PAM based on original data the drop from 2 to 3 clusters is too high to repeat the approach, thus 2 clusters will be generated.
+In PAM using PCA data I will follow the same logic as in K-means++ and choose k = 3 for PCA-based experiment. However the plot for PAM based on original data shows a big drop from 2 to 3 clusters, thus 2 clusters will be generated.
 
-_PAM algorithm_
+_Running PAM algorithm_
+
 ```markdown
-# Run PAM (PCA data)
+################################## PCA data ##################################
+
+# Train PAM and show summary
 pam_pca <- pam(df_pca_l, 3)
 summary(pam_pca)
 
-# Run PAM (Original data)
-pam <- pam(df, 2)
-summary(pam)
-
-_Clusters and silhouette plots_
-# Cluster plot: dim1, dim2
+# Show cluster plot: dim1, dim2
 fviz_cluster(pam_pca, geom = "point", ellipse.type = "convex")
 
-# Silhouette plot
+# Show silhouette plot
 sil_pca_pam <- silhouette(pam_pca$cluster, dist(df_pca_l))
 fviz_silhouette(sil_pca_pam)
+
+##############################################################################
 ```
-Silhouette score (PCA data)
+
 Average silhouette width per cluster:
+
 0.03363569 0.02823446 0.04791684
 
-Silhouette score (Original data)
-Average silhouette width per cluster:
-0.5656762 0.1312273
-
-Cluster and silhouette plots (PCA data)
 ![Clusters visualization for PAM on PCA data](https://github.com/alebilas/images/blob/main/fviz_cluster_pam_pca.png)
 
 ![Silhouette scores visualization for PAM on PCA data](https://github.com/alebilas/images/blob/main/sil_plot_pam_pca.png)
 
-Cluster and silhouette plots (Original data)
+```markdown
+################################ Original data ###############################
+
+# Train PAM and show summary
+pam <- pam(df, 2)
+summary(pam)
+
+# Show cluster plot: dim1, dim2
+fviz_cluster(pam, geom = "point", ellipse.type = "convex")
+
+# Show silhouette plot
+sil_pam <- silhouette(pam$cluster, dist(df))
+fviz_silhouette(sil_pam)
+
+##############################################################################
+```
+
+Average silhouette width per cluster:
+
+0.5656762 0.1312273
+
 ![Clusters visualization for PAM on originl data](https://github.com/alebilas/images/blob/main/fviz_cluster_pam_org.png)
 
 ![Silhouette scores visualization for PAM on original data](https://github.com/alebilas/images/blob/main/sil_plot_pam_org.png)
 
-Again, original data gives much better results than PCA input.
+**Conclusion:** Again, original data gives much better results than PCA input. Moreover, in the winning approach, compared to K-means++ resulting clusters are less overlapped which is also reflected in higher silhouette score.
 
 ### Hierarchical algorithms
-The 3rd part of the analysis was a test for hierarchical methods quality. First, one can check which of various hierarchical methods produces the higest agglomerative coefficient.
+The last part of the analysis was a test for hierarchical methods quality. First, one can check which of various hierarchical methods produces the higest agglomerative coefficient.
+
 
 ```markdown
+################################## PCA data ##################################
+
 ac_pca <- function(x) {
   agnes(df_pca_l, method = x)$ac
 }
 map_dbl(m, ac_pca)
 
-ac <- function(x) {
-  agnes(df, method = x)$ac
-}
-map_dbl(m, ac)
+##############################################################################
 ```
 
-PCA data
 |  average  |   single  |  complete |   ward    |
 | --------- | --------- | --------- | --------- |
 | 0.7015815 | 0.6623972 | 0.7900627 | **0.8008557** | 
 
-Original data
+
+```markdown
+
+################################ Original data ###############################
+
+ac <- function(x) {
+  agnes(df, method = x)$ac
+}
+map_dbl(m, ac)
+
+##############################################################################
+
+```
+
 |  average  |   single  |  complete |   ward    | 
 | 0.8807898 | 0.8791851 | 0.9114954 | **0.9652859** |
 
-AC suggests using Ward method, ergo:
+In both cases AC suggests using Ward method.
+
+_Running Ward algorithm_
+
 ```markdown
-hc_pca <- agnes(df_pca_l, method = "ward")
-pltree(hc_pca, cex = 0.6, hang = -1, main = "dendrogram - agnes")
-rect.hclust(hc_pca, k = 3, border = 2:5)
-```
+################################## PCA data ##################################
 
-_Ward method application_
-```markdown
-# Run hierarchical clustering - Ward (PCA data)
-hc_pc <- hcut(df_pca_l, k = 3, hc_method = "ward.D2")
+# Train hierarchical clustering - Ward
+hc_pca <- hcut(df_pca_l, k = 3, hc_method = "ward.D2")
 
-# Run hierarchical clustering - Ward (Original data)
-hc <- hcut(df, k = 3, hc_method = "ward.D2")
-
-_Dendrogram and silhouette plots_
-# Dendrogram (PCA data)
+# Dendrogram
 fviz_dend(hc_pca, rect = TRUE)
 
-# Dendrogram (Originaal data)
-fviz_dend(hc, rect = TRUE)
-
-# Silhouette plot (PCA data)
+# Silhouette plot
 fviz_silhouette(hc_pca)
 
-# Silhouette plot (Original data)
-fviz_silhouette(hc)
+##############################################################################
 ```
 
-PCA data
 | cluster | size | ave.sil.width |
 | ------- | ---- | ------------- |
 |       1 |  39  |       -0.14   |
 |       2 | 161  |        0.30   |
 |       3 |   8  |       -0.14   |
 
-Original data
+![Dendrogram for HC on PCA data](https://github.com/alebilas/images/blob/main/hc_pca_dendr.png)
+
+![Silhouette scores visualization for HC on PCA data](https://github.com/alebilas/images/blob/main/hc_pca_sil.png)
+
+
+```markdown
+################################ Original data ###############################
+
+# Train hierarchical clustering - Ward
+hc <- hcut(df, k = 3, hc_method = "ward.D2")
+
+# Dendrogram
+fviz_dend(hc, rect = TRUE)
+
+# Silhouette plot
+fviz_silhouette(hc)
+
+##############################################################################
+```
+
 | cluster | size | ave.sil.width |
 | ------- | ---- | ------------- |
 |       1 | 111  |        0.14   |
 |       2 |  71  |        0.50   |
 |       3 |  26  |        0.20   |
 
-Dendrogram and silhouette plot (PCA data)
-![Dendrogram for HC on PCA data](https://github.com/alebilas/images/blob/main/hc_pca_dendr.png)
-
-![Silhouette scores visualization for HC on PCA data](https://github.com/alebilas/images/blob/main/hc_pca_sil.png)
-
-
-Dendrogram and silhouette plot (Original data)
 ![Dendrogram for HC on original data](https://github.com/alebilas/images/blob/main/hc_org_dendr.png)
 
 ![Silhouette scores visualization for HC on original data](https://github.com/alebilas/images/blob/main/hc_org_sil.png)
 
-For the 3rd time leveraging original data gives better results, so the choise is simple as to selection of input data. From the algorithm point of view, PAM managed best what can be seen the highest positive silhouette scores.
+**Conclusion:** For the third time leveraging original data gives better results, so the choise is simple as to selection of input data. From the algorithm point of view, PAM managed best what can be seen the highest positive silhouette scores. Clusters generated by PAM are added to the main dataset to be analysed further in terms of variables means.
 
 ```markdown
 df_pam <- cbind(df_with_id, pam$clustering)
 names(df_pam)[names(df_pam) == 'pam$clustering'] = 'cluster'
+
+# Generate mean values of each variable grouped by a cluster
+aggr = as.data.frame(aggregate(df_pam[,2:48], by = list(df_pam$cluster), FUN = mean))
+View(aggr)
 ```
+
+**Final conclusion:** The above analysis aimed at testing 3 different methods for 2 input sets of real life data. In all situations original, not scaled data turned out to give significantly better results than Principal Components created leveraging the same data frame. As PCA is very popular method, one must always consider that it is not one-size-fits-all approach. Among 3 implemented algorithms, Partitioning Around Medoids has given the most trustworthy results, hence the further analysis of basic statistics was prepared on that basis. Mean values of majority variabled indicated that the 1st cluster represents stores with revenues below population average, whereas the 2nd cluster collects stored performing better than the average units.
+
 
 
 
