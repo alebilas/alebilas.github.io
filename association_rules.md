@@ -2,7 +2,7 @@
 #### Aleksandra Biłas
 
 ## Introduction
-Association rules are a set of methods which may easily describe patterns of customers purchases. They are widely used by FMCG companies as a recommendation engine input on websites, showing products that people similar to a current web-surfer also boughts. However for that companies usually need customers identifiers which is not always possible when a firm does not have a loyalty programme. In that case association rules might be leveraged as inbound promotions in the shape of pop-ups (recommendations) in Point of Sales.
+Association rules are a set of methods which may easily describe patterns of customers purchases. They are widely used by FMCG companies as a recommendation engine input on websites, showing products that people similar to a current web-surfer also bought. However companies usually need customers identifiers which are not always avaailaable when a firm does not have a loyalty programme. In that case association rules might be leveraged as inbound promotions in the shape of pop-ups (recommendations) in Point of Sales based on historical sets of items purchased, not similarities among customer profiles.
 
 ### Required packages
 ```markdown
@@ -14,7 +14,7 @@ library(tidyverse)
 ```
 
 ## Data preparation
-An initial dataset contains over 5.3M items sold in more than 200 meat stores. Each item is linked to 2 categories groups which are high and medium level of granularity. A preliminary run of asscoation rules using SKU and the medium-level groups did not return satisfing results, so new categories for 1600 items has been manually created, giving over 70 new groups of products. Two extra steps consisted in removing shopping bags which were also a part of transactions, as well as transactions were only one product was bought.
+An initial dataset contains over 5.3M items sold in more than 200 meat stores. Each item is linked to 2 categories groups which are high- and medium-level of granularity. A preliminary run of association rules using SKU and the medium-level groups did not return satisfying results, so new categories for 1600 items has been manually created, giving over 70 new groups of products. Two extra steps consisted in removing shopping bags which where also a part of transactions, as well as transactions where only one product was bought.
 
 _Final dataset before transforming to AR-required format_
 ```markdown
@@ -152,10 +152,10 @@ itemFrequency(trans2, type="absolute")
 ```
 
 ## Creating association rules
-Receipts being under analysis come from all existing stores. Thus, setting standard parameters of _support_ = 0.1 and _confidence_ = 0.8 may lead to 0 rules, what actually happened. That's why, with trials and error, the final setting aare _support_ = 0.04 and _confidence_ = 0.3. This approach gave 11 rules. (Un)fortunately all right hand side elements contain only one components, and there are no pairs of item which could suggest any associated product, but I accept this approach for experimental goals.
+Receipts being under analysis come from all existing stores. Thus, setting standard parameters of _support_ = 0.1 and _confidence_ = 0.8 may lead to 0 rules, what actually happened. That's why, with trials and error, the final settings are _support_ = 0.04 and _confidence_ = 0.3. This approach gave 11 rules. (Un)fortunately all right hand side elements contain only one components, and there are no pairs of item which could suggest any associated product, but I accept this approach for experimental goals.
 
 ```markdown
-# generte rules
+# Generate rules
 rules.trans<-apriori(trans2, parameter=list(supp=0.04, conf=0.3))
 
 # Sort and show rules
@@ -177,8 +177,8 @@ inspect(rules.by.conf)
 [11] {mieso_kurczak}            => {mieso_wieprzowina} 0.06827600 0.3045324  0.2241995 1.3330744  68225
 ```
 
-Right hand side elemets of 91% of rules present _wedliny_szynka (ham)_ as the associated product. Only 1 rule indicates pork. Support is quire poor for all pairs, however this is covered by the limitaation set due to dataset characteristics. One should have a look at lift measure where 7 out of 11 rules are better than any randomly chosen rule for a population, so probably only those pairs should be taaken into account later.
+Right hand side elemets of 91% of rules present _wedliny_szynka (ham)_ as the associated product, and only 1 rule indicates pork. Support is quire poor for all pairs, however this is caaused by the limitation setting due to dataset characteristics. One should have a look at lift measure where 7 out of 11 rules are better than any randomly chosen rule for a population (lift > 1), so probably only those pairs should be taken into account in further considerations.
 
-**Conclusion:** As mentioned at the beginning, association rules may be useful in inbound promotions/campaaigns a company lacks knwoledge about customers. Leveraging results of the above analysis 7 rules might be implemented in Point of Sales popping up as recommendations for a caashier on what to propose to a customer. Reading through the listed rules, one may say that ham could be proposed to clients who have already added to their baskets cooked meats (wedliny) or cheese, or they could be proposed with pork when they are going to buy chicken meat. 
+**Conclusion:** As mentioned at the beginning, association rules may be useful in inbound promotions/campaigns when a company lacks knwoledge about customers. Leveraging results of the above analysis, 7 rules might be implemented in Point of Sales popping up as recommendations for a cashier on what to propose to a customer. Reading through the listed rules, one may say that ham could be proposed to clients who have already added cooked meats (wedliny) or cheese to their baskets, or they could be proposed with pork when they are going to buy chicken meat. 
 
-**Further steps:** Subsequent steps of the analysis are to perform the same type of analysis but at the store level. The results then may be more trustworthy because one cannot now if all the stores have the same stock, hence the rules might be much different and better in terms of support and confidence.
+**Further steps:** Subsequent steps of the analysis are to perform the same type of experiment but at the store level. The results then may be more trustworthy because one cannot know if all the stores have the same stock, hence the rules might be much different and better in terms of support and confidence.
