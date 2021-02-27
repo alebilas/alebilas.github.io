@@ -2,7 +2,7 @@
 #### Aleksandra Biłas
 
 ## Introduction
-Principal Component Analysis usually serves as a method of creating new artificial attributes for further analytical initiatives. While data analysts happen not to look at the new features explainability, the more business-focused people may want to get to know a little bit more about what constitutes the new attributes. Another situation when PCA is helpful is when there is no data dictionaries available or they are too granular. In such a case the algorithm is leveraged in order to find "profiles" of units being analysed. In the following analysis the former approach is applied on meat stores revenue data. Products categories number over 50 categories and the goal is to find stores' profiles in terms of what type of products they sell most often. PCA method is widely used in both academic and business analyses due to being easy to understand and performant.
+Principal Component Analysis usually serves as a method of creating new artificial attributes for further analytical initiatives. While data analysts happen not to look at the new features explainability, the more business-focused people may want to get to know a little bit more about what constitutes the new attributes. Another situation when PCA is helpful is when there is no data dictionaries available or they are too granular. In such a case the algorithm is leveraged in order to find "profiles" of units being analysed. In the following analysis the former approach is applied on meat stores revenue data. Products categories number over 50 groups and the goal is to find attributes that could be used as stores' profiles in terms of what type of products they sell most often. PCA method is widely used in both academic and business analyses due to being easy to understand and performant.
 
 ### Required packages
 ```markdown
@@ -17,9 +17,10 @@ The initial dataset numbers 208 rows (stores) and 52 attributes - ID and 51 attr
 ```markdown
 summary(df)
 ```
-4 columns have been removed due high null rate (greater than 75%). 
+4 columns have been removed due high null rate (greater than 75%): Alkohole&wina (alkohol&wine), Mrozonki&lody (frozen foods, ice creams), Pieczywo (breadstuff), Pozostale Przyprawy (other seasonings).
 
-Then one needs to make sure that the data meets the PCA assumption about linearity. To assess this scatter plots with linear regression lines were drawn and saved to PDF. Due to big number of variables pairs I attached only few of them as examples.
+Then one needs to make sure that the data meets the PCA assumption on linearity. To assess this, scatter plots with linear regression lines were drawn and saved to PDF. Due to big number of variables pairs I attached only few of them as examples.
+
 ```markdown
 pdf(file = ".../Scatter_plots.pdf", width = 4, height = 4)
 
@@ -83,8 +84,8 @@ comp_uniq = data.frame(Complexity=pca$complexity, Uniqueness=pca$uniqueness)
 comp_uniq
 ```
 
-| | Complexity | Uniqueness |
-| --- | --- | --- |
+|                                 | Complexity | Uniqueness |
+| ------------------------------- | -------- | ----------- |
 | Boczki.wedzone                  | 1.879905 | 0.103943130 |
 | Cielecina                       | 1.943003 | 0.035199734 |
 | Dagoma                          | 1.501562 | 0.006662387 |
@@ -196,4 +197,4 @@ print(loadings(pca), digits=3, cutoff=0.5, sort=TRUE)
 **RC6**: Raw salads.
 **RC22**: Smoked bones.
 
-The obtained components may be used as inputs in further analyses, for instance in clustering algorithms.
+The obtained components may be used as inputs in further analyses, for instance in clustering algorithms, or they can make up stores clustering themselves.
