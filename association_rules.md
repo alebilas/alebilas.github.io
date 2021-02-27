@@ -40,30 +40,30 @@ trans <- read.transactions(".../transactions.csv", format="single", sep=",", col
 # Limiting transactions to those where there are at least 2 items
 trans2 <- trans[size(trans) > 1]
 inspect(head(trans2))
-```
 
-| items                            | transactionID |
-| -------------------------------- | ------------- |
-| {garmazerka_pierogi,                      
+> inspect(head(trans2))
+    items                        transactionID
+[1] {garmazerka_pierogi,                      
      wedliny_kielbasa_sucha,                  
      wedliny_parowki,                         
      wedliny_salami,                          
      wedliny_schab,                           
-     wedliny_szynka}               | 1000135910    |
-| {wedliny_metki,                           
-     wedliny_podrobowe_inne}       | 10001359100   |
-| {wedliny_kielbasa_sucha,                  
-     wedliny_poledwica}            | 1000135911    |
-| {wedliny_metki,                           
-     wedliny_szynka}               | 1000135914    |
-| {mieso_wieprzowina,                       
+     wedliny_szynka}               1000135910 
+[2] {wedliny_metki,                           
+     wedliny_podrobowe_inne}       10001359100
+[3] {wedliny_kielbasa_sucha,                  
+     wedliny_poledwica}            1000135911 
+[4] {wedliny_metki,                           
+     wedliny_szynka}               1000135914 
+[5] {mieso_wieprzowina,                       
      wedliny_galarety,                        
      wedliny_podrobowe_salceson,              
      wedliny_salami,                          
-     wedliny_szynka}               | 1000135917    |
-| {nabial_ser,                              
-     wedliny_kielbasa_sucha}       | 1000135918    |
-     
+     wedliny_szynka}               1000135917 
+[6] {nabial_ser,                              
+     wedliny_kielbasa_sucha}       1000135918     
+```
+
 ```markdown
 # Descriptive statistics
 round(itemFrequency(trans2), 3)
@@ -161,22 +161,21 @@ rules.trans<-apriori(trans2, parameter=list(supp=0.04, conf=0.3))
 # Sort and show rules
 rules.by.conf<-sort(rules.trans, by="confidence", decreasing=TRUE)
 inspect(rules.by.conf)
-```
 
 > inspect(rules.by.conf)
-|     lhs                           | rhs                | support   | confidence| coverage | lift     | count |
-| --------------------------------- | ------------------ | --------- | --------- | -------- | -------- | ----- |
-| [1]  {wedliny_schab}            =>| {wedliny_szynka}   | 0.08362447| 0.4347794 | 0.1923377| 1.1544544|  83562|
-| [2]  {wedliny_kanapkowe_suche}  =>| {wedliny_szynka}   | 0.05811641| 0.4258675 | 0.1364659| 1.1307909|  58073|
-| [3]  {nabial_ser}               =>| {wedliny_szynka}   | 0.06587221| 0.4229618 | 0.1557403| 1.1230753|  65823|
-| [4]  {wedliny_kielbasa_sucha}   =>| {wedliny_szynka}   | 0.07402530| 0.4173390 | 0.1773745| 1.1081454|  73970|
-| [5]  {wedliny_wedzonki_indyk}   =>| {wedliny_szynka}   | 0.04378671| 0.3965416 | 0.1104215| 1.0529227|  43754|
-| [6]  {}                         =>| {wedliny_szynka}   | 0.37661033| 0.3766103 | 1.0000000| 1.0000000| 376329|
-| [7]  {wedliny_wedzonki_kurczak} =>| {wedliny_szynka}   | 0.04101764| 0.3702864 | 0.1107727| 0.9832083|  40987|
-| [8]  {wedliny_parowki}          =>| {wedliny_szynka}   | 0.05859277| 0.3661967 | 0.1600035| 0.9723492|  58549|
-| [9]  {mieso_wieprzowina}        =>| {wedliny_szynka}   | 0.07295650| 0.3193632 | 0.2284436| 0.8479938|  72902|
-| [10] {mieso_kurczak}            =>| {wedliny_szynka}   | 0.07023046| 0.3132499 | 0.2241995| 0.8317613|  70178|
-| [11] {mieso_kurczak}            =>| {mieso_wieprzowina}| 0.06827600| 0.3045324 | 0.2241995| 1.3330744|  68225|
+     lhs                           rhs                 support    confidence coverage  lift      count 
+[1]  {wedliny_schab}            => {wedliny_szynka}    0.08362447 0.4347794  0.1923377 1.1544544  83562
+[2]  {wedliny_kanapkowe_suche}  => {wedliny_szynka}    0.05811641 0.4258675  0.1364659 1.1307909  58073
+[3]  {nabial_ser}               => {wedliny_szynka}    0.06587221 0.4229618  0.1557403 1.1230753  65823
+[4]  {wedliny_kielbasa_sucha}   => {wedliny_szynka}    0.07402530 0.4173390  0.1773745 1.1081454  73970
+[5]  {wedliny_wedzonki_indyk}   => {wedliny_szynka}    0.04378671 0.3965416  0.1104215 1.0529227  43754
+[6]  {}                         => {wedliny_szynka}    0.37661033 0.3766103  1.0000000 1.0000000 376329
+[7]  {wedliny_wedzonki_kurczak} => {wedliny_szynka}    0.04101764 0.3702864  0.1107727 0.9832083  40987
+[8]  {wedliny_parowki}          => {wedliny_szynka}    0.05859277 0.3661967  0.1600035 0.9723492  58549
+[9]  {mieso_wieprzowina}        => {wedliny_szynka}    0.07295650 0.3193632  0.2284436 0.8479938  72902
+[10] {mieso_kurczak}            => {wedliny_szynka}    0.07023046 0.3132499  0.2241995 0.8317613  70178
+[11] {mieso_kurczak}            => {mieso_wieprzowina} 0.06827600 0.3045324  0.2241995 1.3330744  68225
+```
 
 Right hand side elemets of 91% of rules present _wedliny_szynka (ham)_ as the associated product. Only 1 rule indicates pork. Support is quire poor for all pairs, however this is covered by the limitaation set due to dataset characteristics. One should have a look at lift measure where 7 out of 11 rules are better than any randomly chosen rule for a population, so probably only those pairs should be taaken into account later.
 
